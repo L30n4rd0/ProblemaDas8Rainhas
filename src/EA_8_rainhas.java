@@ -18,28 +18,63 @@ public class EA_8_rainhas extends EA<TabuleiroDeRainhas> {
 	private TabuleiroDeRainhas[] recombinar(TabuleiroDeRainhas[] pais) {
 		
 		// realizar um crossover para gerar 2 filhos a partir de 2 pais recebidos no vetor em parâmetro
+		TabuleiroDeRainhas[] filhos = new TabuleiroDeRainhas[2];
+		int pontoDeCrossover = new Random().nextInt(8);
 		
-		TabuleiroDeRainhas[] result = new TabuleiroDeRainhas[2];
-		int i = new Random().nextInt(8);
+		TabuleiroDeRainhas pai1 = pais[0];
+		TabuleiroDeRainhas pai2 = pais[1];
+		TabuleiroDeRainhas filho1 = new TabuleiroDeRainhas();
+		TabuleiroDeRainhas filho2 = new TabuleiroDeRainhas();
 		
-		TabuleiroDeRainhas t = new TabuleiroDeRainhas();
+		//Coloca as rainhas do lado esquerdo do ponto de crossover nos filhos 
+		for (int i = 0; i < pontoDeCrossover; i++){
+			filho1.add(pai1.getRainha(i));
+			filho2.add(pai2.getRainha(i));
+		}
 		
-		// continuar
+		/*
+		 * Coloca as rainhas do lado direito do ponto de crossover nos filhos (trocando os pais).
+		 * Como uma rainha do lado esquerdo do pai2 pode ter as mesmas cordenadas de alguma rainha
+		 * do pai 1, é necessário fazer o filtro.
+		 */
+		for (int i = pontoDeCrossover; i < 8 - pontoDeCrossover; i++){
+			if(!filho1.getRainhas().contains(pai2.getRainha(i))){
+				filho1.add(pai2.getRainha(i));
+			}
+			
+			if(!filho2.getRainhas().contains(pai1.getRainha(i))){
+				filho2.add(pai1.getRainha(i));
+			}
+		}
 		
-		return null;
+		/*
+		 * Volta para o lado direito do ponto do crossover para preencher as
+		 * lacunas deixadas por eventuais rainhas repetidas no loop acima 
+		 */
+		for (int i = 0; i < pontoDeCrossover; i++){
+			if(!filho1.getRainhas().contains(pai2.getRainha(i))){
+				filho1.add(pai2.getRainha(i));
+			}
+			
+			if(!filho2.getRainhas().contains(pai1.getRainha(i))){
+				filho2.add(pai1.getRainha(i));
+			}
+		}
+		
+		return filhos;
 	}
 
 	private TabuleiroDeRainhas executarMut(TabuleiroDeRainhas tabuleiro) {
 		
 		// realizar a multação no tabuleiro, ou seja, alterar a posição de algumas rainhas
 		
-		int i, j, rainhaParaMultacao = new Random().nextInt(8);
+		int i, j, rainhaParaMutacao = new Random().nextInt(8);
 		
-		while((i = new Random().nextInt(8)) == tabuleiro.rainhas.get(rainhaParaMultacao).getX()) continue;
-		while((j = new Random().nextInt(8)) == tabuleiro.rainhas.get(rainhaParaMultacao).getX()) continue;
+		while((i = new Random().nextInt(8)) == tabuleiro.getRainhas().get(rainhaParaMutacao).getX()) continue;
+		while((j = new Random().nextInt(8)) == tabuleiro.getRainhas().get(rainhaParaMutacao).getX()) continue;
 		
-		tabuleiro.rainhas.get(rainhaParaMultacao).setX(i);
-		tabuleiro.rainhas.get(rainhaParaMultacao).setY(j);
+		tabuleiro.getRainhas().get(rainhaParaMutacao).setX(i);
+		tabuleiro.getRainhas().get(rainhaParaMutacao).setY(j);
 		
 		return tabuleiro;
 	}
@@ -66,15 +101,15 @@ public class EA_8_rainhas extends EA<TabuleiroDeRainhas> {
 	}
 	
 	private boolean parar(List<TabuleiroDeRainhas> pop) {
-		return pop.stream().filter(x -> x.pontuacao != 0).count() > 0;
+		return pop.stream().filter(x -> x.getPontuacao() != 0).count() > 0;
 		//fitness 0 ou max
 	}
 
 	private void avaliar(TabuleiroDeRainhas tabuleiro) {
 		int pontuacao = 0;
 		
-		for (Rainha rainha1 : tabuleiro.rainhas) {
-			for (Rainha rainha2 : tabuleiro.rainhas) {
+		for (Rainha rainha1 : tabuleiro.getRainhas()) {
+			for (Rainha rainha2 : tabuleiro.getRainhas()) {
 				if (!rainha1.equals(rainha2)) {
 					// verificar ataques de rainhas pela linha
 					if (rainha1.x == rainha2.x) pontuacao++;
@@ -90,7 +125,7 @@ public class EA_8_rainhas extends EA<TabuleiroDeRainhas> {
 				}
 			}
 		}
-		tabuleiro.pontuacao = pontuacao;
+		tabuleiro.setPontuacao(pontuacao);
 	}
 
 	private List<TabuleiroDeRainhas> inicializar() {
