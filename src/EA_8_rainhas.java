@@ -72,12 +72,21 @@ public class EA_8_rainhas extends EA<TabuleiroDeRainhas> {
 
 	private void avaliar(TabuleiroDeRainhas tabuleiro) {
 		int pontuacao = 0;
+		
 		for (Rainha rainha1 : tabuleiro.rainhas) {
 			for (Rainha rainha2 : tabuleiro.rainhas) {
 				if (!rainha1.equals(rainha2)) {
+					// verificar ataques de rainhas pela linha
 					if (rainha1.x == rainha2.x) pontuacao++;
+					
+					// verificar ataques de rainhas pela coluna
 					if (rainha1.y == rainha2.y) pontuacao++;
+					
+					// verificar ataques de rainhas pela vertical de 45 graus em relacao ao eixo X
 					if (Math.abs(rainha1.x - rainha1.y) == Math.abs(rainha2.x - rainha2.y)) pontuacao++;
+					
+					// verificar ataques de rainhas pela vertical de 135 graus em relacao ao eixo X
+					if (Math.abs(rainha1.x + rainha1.y) == Math.abs(rainha2.x + rainha2.y)) pontuacao++;
 				}
 			}
 		}
