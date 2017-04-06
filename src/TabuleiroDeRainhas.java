@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class TabuleiroDeRainhas {
+public class TabuleiroDeRainhas implements Comparable<TabuleiroDeRainhas> {
+	
 	private List<Rainha> rainhas = new ArrayList<Rainha>();
 	private int pontuacao;
 	
@@ -23,5 +24,18 @@ public class TabuleiroDeRainhas {
 
 	public List<Rainha> getRainhas() {
 		return rainhas;
+	}
+
+	@Override
+	public int compareTo(TabuleiroDeRainhas outroTabuleiro) {
+		// TODO Auto-generated method stub
+	 
+        if (this.getPontuacao() < outroTabuleiro.getPontuacao()) {
+            return -1;
+        }
+        if (this.getPontuacao() > outroTabuleiro.getPontuacao()) {
+            return 1;
+        }
+        return 0;
 	}
 }

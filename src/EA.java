@@ -4,6 +4,7 @@ public abstract class EA<S> {
 	
 	public void executor() {
 		int execucoes = 0;
+		boolean elitismo = true;
 		
 		List<S> pop = inicializar();
 		
@@ -11,7 +12,8 @@ public abstract class EA<S> {
 			avaliar(s);
 		}
 		
-		while(!parar() || execucoes == 1000) {
+		while(!parar(pop) && execucoes <= 100) {
+			System.out.println("Exec: " + execucoes);
 			S[] pais = selecionarPais(pop);
 			S[] filhos = recombinar(pais);
 			
@@ -22,41 +24,42 @@ public abstract class EA<S> {
 			avaliar(filhos[1]);
 			
 			pop = selecionarSobreviventes(pop, filhos);
+			
 			execucoes++;
 		}
 	}
 
-	private List<S> selecionarSobreviventes(List<S> pop, S[] filhos) {
+	protected List<S> selecionarSobreviventes(List<S> pop, S[] filhos) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	private S[] recombinar(S[] pais) {
+	protected S[] recombinar(S[] pais) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	private S executarMut(S s) {
+	protected S executarMut(S s) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	private S[] selecionarPais(List<S> pop) {
+	protected S[] selecionarPais(List<S> pop) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	private boolean parar() {
+	protected boolean parar(List<S> pop) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	private void avaliar(S s) {
+	protected void avaliar(S s) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	private List<S> inicializar() {
+	protected List<S> inicializar() {
 		// TODO Auto-generated method stub
 		return null;
 	}
