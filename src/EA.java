@@ -2,9 +2,8 @@ import java.util.List;
 
 public abstract class EA<S> {
 	
-	public void executor() {
+	public void executor() throws Exception {
 		int execucoes = 0;
-		boolean elitismo = true;
 		
 		List<S> pop = inicializar();
 		
@@ -12,7 +11,7 @@ public abstract class EA<S> {
 			avaliar(s);
 		}
 		
-		while(!parar(pop) && execucoes <= 100) {
+		while(!parar(pop) && execucoes <= 10000) {
 			System.out.println("Exec: " + execucoes);
 			S[] pais = selecionarPais(pop);
 			S[] filhos = recombinar(pais);
@@ -34,17 +33,17 @@ public abstract class EA<S> {
 		return null;
 	}
 
-	protected S[] recombinar(S[] pais) {
+	protected S[] recombinar(S[] pais) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	protected S executarMut(S s) {
+	protected S executarMut(S s) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	protected S[] selecionarPais(List<S> pop) {
+	protected S[] selecionarPais(List<S> pop) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -59,7 +58,7 @@ public abstract class EA<S> {
 		
 	}
 
-	protected List<S> inicializar() {
+	protected List<S> inicializar() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
