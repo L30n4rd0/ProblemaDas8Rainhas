@@ -15,12 +15,12 @@ public class EA_8_rainhas extends EA<TabuleiroDeRainhas> {
 		pop.remove(pop.size() - 1);
 		pop.remove(pop.size() - 1);
 		
-//		for (int i = 0; i < pop.size(); i++) {
-//			System.out.println(pop.get(i).getPontuacao());
-//			
-//		}
+		for (int i = 0; i < 5; i++) {
+			System.out.println(pop.get(i).getPontuacao());
+			
+		}
 		
-		System.out.println("selecionarSobreviventes");
+		System.out.println("Melhor: " + pop.get(0).getPontuacao());
 		
 		return pop;
 	}
@@ -85,13 +85,30 @@ public class EA_8_rainhas extends EA<TabuleiroDeRainhas> {
 		newX = new Random().nextInt(8),
 		newY = new Random().nextInt(8);
 		
-		while(
-				(newX = new Random().nextInt(8)) == tabuleiro.getRainhas().get(rainhaParaMutacao).getX() &&
-				(newY = new Random().nextInt(8)) == tabuleiro.getRainhas().get(rainhaParaMutacao).getY()
-			)
+//		int k = 0;
+//		while (k < tabuleiroResult.getRainhas().size()) {
+//			newX = new Random().nextInt(8);
+//			newY = new Random().nextInt(8);
+//			
+//			// verifica se as novas coordenadas já estão em alguma rainha no tabuleiroResult
+//			for (k = 0; k < tabuleiroResult.getRainhas().size(); k++) {
+//				
+//				// se as coordenadas já estão presentes, então a verificação é interrompida e
+//				// valor de k será menor que a quantidade de rainhas e o while é execultado novamente
+//				if (tabuleiroResult.getRainha(k).getX() == newX && tabuleiroResult.getRainha(k).getY() == newY) break;
+//															
+//			}
+//			
+//		}
 		
-		tabuleiro.getRainhas().get(rainhaParaMutacao).setX(newX);
-		tabuleiro.getRainhas().get(rainhaParaMutacao).setY(newY);
+		tabuleiroResult.getRainha(rainhaParaMutacao).setX(newX);
+		tabuleiroResult.getRainha(rainhaParaMutacao).setY(newY);
+//		
+//		System.out.println("Inicio tabuleiro");
+//		for (Rainha rainha: tabuleiro.getRainhas()) {
+//			System.out.print("x=" + rainha.getX());
+//			System.out.println(" y=" + rainha.getY());
+//		}
 		
 		//System.out.println("executarMut");
 		return tabuleiroResult;
@@ -103,11 +120,6 @@ public class EA_8_rainhas extends EA<TabuleiroDeRainhas> {
 		TabuleiroDeRainhas[] result = new TabuleiroDeRainhas[2];
 		
 		List<TabuleiroDeRainhas> possiveisPais = new ArrayList<>();
-		
-		while (possiveisPais.size() < 3) {
-			possiveisPais.add(pop.get(new Random().nextInt(10)));
-			
-		}
 		
 		while(possiveisPais.size() < 5) {
 			int randomNum = new Random().nextInt(pop.size());
@@ -174,10 +186,41 @@ public class EA_8_rainhas extends EA<TabuleiroDeRainhas> {
 		
 		for (int j = 0; j < 100; j++) {
 			TabuleiroDeRainhas tabuleiro = new TabuleiroDeRainhas();
+			int novoX = new Random().nextInt(8), novoY = new Random().nextInt(8);
 			
+			tabuleiro.addRainha(new Rainha(novoX, novoY));
+			
+			//adcionar 8 rainhas no tabuleiro
 			for (int i = 0; i < 8; i++) {
-				tabuleiro.add(new Rainha(new Random().nextInt(8), new Random().nextInt(8)));
+				
+				int k = 0;
+				
+				// gera novas coordenadas
+				while (k < tabuleiro.getRainhas().size()) {
+					novoX = new Random().nextInt(8);
+					novoY = new Random().nextInt(8);
+					
+					// verifica se as novas coordenadas já estão em alguma rainha no tabuleiro
+					for (k = 0; k < tabuleiro.getRainhas().size(); k++) {
+						
+						// se as coordenadas já estão presentes, então a verificação é interrompida e
+						// valor de k será menor que a quantidade de rainhas e o while é execultado novamente
+						if (tabuleiro.getRainha(k).getX() == novoX && tabuleiro.getRainha(k).getY() == novoY) break;
+																	
+					}
+					
+				}
+				
+				tabuleiro.addRainha(new Rainha(novoX, novoY));
 			}
+			
+//			System.out.println("Inicio tabuleiro");
+//			for (Rainha rainha: tabuleiro.getRainhas()) {
+//				System.out.print("x=" + rainha.getX());
+//				System.out.println(" y=" + rainha.getY());
+//				
+//			}
+			
 			tabuleiros.add(tabuleiro);
 		}
 		

@@ -6,7 +6,7 @@ public class TabuleiroDeRainhas implements Comparable<TabuleiroDeRainhas> {
 	private List<Rainha> rainhas = new ArrayList<Rainha>();
 	private int pontuacao;
 	
-	public void add(Rainha p){
+	public void addRainha(Rainha p){
 		rainhas.add(p);
 	}
 	

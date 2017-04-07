@@ -12,7 +12,7 @@ public abstract class EA<S> {
 			avaliar(s);
 		}
 		
-		while(!parar(pop) && execucoes <= 100) {
+		while(!parar(pop) ) {
 			System.out.println("Exec: " + execucoes);
 			S[] pais = selecionarPais(pop);
 			S[] filhos = recombinar(pais);
