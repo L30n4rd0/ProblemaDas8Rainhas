@@ -6,7 +6,8 @@ import java.util.Random;
 import javax.sql.rowset.spi.TransactionalWriter;
 
 public class EA_8_rainhas extends EA<TabuleiroDeRainhas> {
-	Random random = new Random();
+	private Random random = new Random();
+	private double PM = 1d/16d;
 	
 	protected List<TabuleiroDeRainhas> selecionarSobreviventes(List<TabuleiroDeRainhas> pop, TabuleiroDeRainhas[] filhos) {
 		
@@ -23,7 +24,7 @@ public class EA_8_rainhas extends EA<TabuleiroDeRainhas> {
 
 	protected TabuleiroDeRainhas[] recombinar(TabuleiroDeRainhas[] pais) throws Exception {
 		TabuleiroDeRainhas[] filhos = new TabuleiroDeRainhas[2];
-		int pontoDeCrossover = random.nextInt(8);
+		int pontoDeCrossover = random.nextInt(6) + 1;
 
 		TabuleiroDeRainhas pai1 = pais[0];
 		TabuleiroDeRainhas pai2 = pais[1];
@@ -78,14 +79,6 @@ public class EA_8_rainhas extends EA<TabuleiroDeRainhas> {
 				paiIndex++;
 			} while(filho2.getRainhas().size() < 8);
 		}
-		
-		if(filho1.getRainhas().size() != 8) {
-			throw new Exception("Recombinar Errado");
-		}
-		
-		if(filho2.getRainhas().size() != 8) {
-			throw new Exception("Recombinar Errado");
-		}
 
 		filhos[0] = filho1;
 		filhos[1] = filho2;
@@ -97,17 +90,19 @@ public class EA_8_rainhas extends EA<TabuleiroDeRainhas> {
 		// realizar a mutação no tabuleiro, ou seja, alterar a posição de algumas rainhas
 		TabuleiroDeRainhas filhoComMutacao = filho;
 		
-		int rainhaParaSubstituicao = random.nextInt(8);
-		
-		while(true) {
-			int newX = random.nextInt(8);
-			int newY = random.nextInt(8);
-			Rainha rainhaMutada = new Rainha(newX, newY);
+		if(Math.random() < PM) {
+			int rainhaParaSubstituicao = random.nextInt(8);
 			
-			if(!filho.getRainhas().contains(rainhaMutada)) {
-				filho.getRainhas().remove(rainhaParaSubstituicao);
-				filho.add(rainhaMutada);
-				break;
+			while(true) {
+				int newX = random.nextInt(8);
+				int newY = random.nextInt(8);
+				Rainha rainhaMutada = new Rainha(newX, newY);
+				
+				if(!filho.getRainhas().contains(rainhaMutada)) {
+					filho.getRainhas().remove(rainhaParaSubstituicao);
+					filho.add(rainhaMutada);
+					break;
+				}
 			}
 		}
 			
@@ -145,21 +140,21 @@ public class EA_8_rainhas extends EA<TabuleiroDeRainhas> {
 	protected void avaliar(TabuleiroDeRainhas tabuleiro) {
 		int pontuacao = 0;
 		
-		for (Rainha rainha1 : tabuleiro.getRainhas()) {
-			for (Rainha rainha2 : tabuleiro.getRainhas()) {
-				if (!rainha1.equals(rainha2)) {
-					// verificar ataques de rainhas pela linha
-					if (rainha1.x == rainha2.x) pontuacao++;
-					
-					// verificar ataques de rainhas pela coluna
-					if (rainha1.y == rainha2.y) pontuacao++;
-					
-					// verificar ataques de rainhas pela vertical de 45 graus em relacao ao eixo X
-					if (Math.abs(rainha1.x - rainha1.y) == Math.abs(rainha2.x - rainha2.y)) pontuacao++;
-					
-					// verificar ataques de rainhas pela vertical de 135 graus em relacao ao eixo X
-					if (Math.abs(rainha1.x + rainha1.y) == Math.abs(rainha2.x + rainha2.y)) pontuacao++;
-				}
+		for (int i = 0; i < tabuleiro.getRainhas().size(); i++){
+			for (int j = i + 1; j < tabuleiro.getRainhas().size(); j++) {
+				Rainha rainha1 = tabuleiro.getRainha(i);
+				Rainha rainha2 = tabuleiro.getRainha(j);
+				
+				if (rainha1.x == rainha2.x) pontuacao++;
+				
+				// verificar ataques de rainhas pela coluna
+				if (rainha1.y == rainha2.y) pontuacao++;
+				
+				// verificar ataques de rainhas pela vertical de 45 graus em relacao ao eixo X
+				if (Math.abs(rainha1.x - rainha1.y) == Math.abs(rainha2.x - rainha2.y)) pontuacao++;
+				
+				// verificar ataques de rainhas pela vertical de 135 graus em relacao ao eixo X
+				if (Math.abs(rainha1.x + rainha1.y) == Math.abs(rainha2.x + rainha2.y)) pontuacao++;
 			}
 		}
 		
